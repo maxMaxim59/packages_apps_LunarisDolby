@@ -32,6 +32,20 @@ jobs:
           curl -fSL "https://github.com/Reginer/aosp-android-jar/raw/main/android-35/android.jar" \
             -o "$ANDROID_HOME/platforms/android-35/android.jar"
 
+      - name: Generate OkHttp HasCacheHolder Stub
+        run: |
+          mkdir -p stub_src/com/android/okhttp/internalandroidapi
+          cat << 'EOF' > stub_src/com/android/okhttp/internalandroidapi/HasCacheHolder.java
+          package com.android.okhttp.internalandroidapi;
+          public interface HasCacheHolder {
+              interface CacheHolder {}
+              CacheHolder getCacheHolder();
+          }
+          EOF
+          javac stub_src/com/android/okhttp/internalandroidapi/HasCacheHolder.java
+          jar cf stubs.jar -C stub_src .
+          rm -rf stub_src
+
       - name: Generate Signing Key
         run: |
           keytool -genkey -v -keystore release.jks -keyalg RSA -keysize 2048 -validity 10000 \
