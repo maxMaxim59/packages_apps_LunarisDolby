@@ -49,12 +49,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
+        kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs += listOf(
+            "-Xnullability-annotations=@android.annotation.Nullable:ignore"
+        )
     }
 }
 
 dependencies {
+    compileOnly(files("stubs.jar"))
     val composeBom = platform("androidx.compose:compose-bom:2024.10.01")
     implementation(composeBom)
 
