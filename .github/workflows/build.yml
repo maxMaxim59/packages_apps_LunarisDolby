@@ -26,6 +26,12 @@ jobs:
         with:
           gradle-version: '8.10.2'
 
+      - name: Install AOSP Hidden API android.jar
+        run: |
+          mkdir -p "$ANDROID_HOME/platforms/android-35"
+          curl -fSL "https://github.com/Reginer/aosp-android-jar/raw/main/android-35/android.jar" \
+            -o "$ANDROID_HOME/platforms/android-35/android.jar"
+
       - name: Generate Signing Key
         run: |
           keytool -genkey -v -keystore release.jks -keyalg RSA -keysize 2048 -validity 10000 \
